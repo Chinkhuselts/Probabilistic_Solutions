@@ -64,17 +64,17 @@ The only region excluded from $A\cup B$ is $A^c\cap B^c = 0.18$ — students who
 
 ---
 
-## Part 3 — Conditional Probabilities
+**\(P(A \mid B)\)** — probability that a student attends regularly, *given* they submit on time:
 
-**$P(A\mid B)$** — probability that a student attends regularly, *given* they submit on time:
+\[
+P(A \mid B) = \frac{P(A \cap B)}{P(B)} = \frac{0.48}{0.70} = \boxed{0.6857 \approx 68.6\%}
+\]
 
-$$P(A\mid B) = \frac{P(A\cap B)}{P(B)} = \frac{0.48}{0.70} = \boxed{0.6857 \approx 68.6\%}$$
+**\(P(B \mid A)\)** — probability that a student submits on time, *given* they attend regularly:
 
-**$P(B\mid A)$** — probability that a student submits on time, *given* they attend regularly:
-
-$$P(B\mid A) = \frac{P(A\cap B)}{P(A)} = \frac{0.48}{0.60} = \boxed{0.80}$$
-
----
+\[
+P(B \mid A) = \frac{P(A \cap B)}{P(A)} = \frac{0.48}{0.60} = \boxed{0.80}
+\]
 
 ## Part 4 — Are $A$ and $B$ Mutually Exclusive?
 
