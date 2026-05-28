@@ -13,124 +13,162 @@ A company classified 400 customers by activity level and renewal.
 | Low ($L$) | 30 | 120 | 150 |
 | **Total** | **200** | **200** | **400** |
 
-**Events:**
-- $H, M, L$ = high, medium, low activity levels
-- $R$ = the customer renewed the subscription
+**Events (subsets of the sample space $\Omega$):**
+- $H, M, L \subseteq \Omega$ — high, medium, low activity levels
+- $R \subseteq \Omega$ — the customer renewed the subscription
 
 ---
 
 ## Part 1 — Why $H$, $M$, $L$ Form a Partition
 
-A **partition** of the sample space requires two properties:
+A **partition** of $\Omega$ requires two properties:
 
-1. **Mutually exclusive:** The events cannot overlap — no customer can have two activity levels simultaneously.
-   $$H\cap M = \emptyset, \quad H\cap L = \emptyset, \quad M\cap L = \emptyset$$
+**1. Mutually exclusive** (pairwise disjoint sets):
+$$H \cap M = \emptyset, \quad H \cap L = \emptyset, \quad M \cap L = \emptyset$$
 
-2. **Exhaustive:** The events cover the entire sample space — every customer has exactly one activity level.
-   $$H\cup M\cup L = \Omega, \quad \text{i.e., } P(H)+P(M)+P(L) = 1$$
+By the **additivity axiom** of probability, disjoint sets satisfy:
+$$P(A \cup B) = P(A) + P(B) \quad \text{whenever } A \cap B = \emptyset$$
 
-Both properties hold by construction: each customer is assigned to exactly one of three activity tiers. Partitions are the foundation for the Law of Total Probability.
+So in particular:
+$$P(H \cup M) = P(H) + P(M), \quad \text{etc.}$$
+
+**2. Exhaustive** (the union covers the entire sample space):
+$$H \cup M \cup L = \Omega$$
+
+Since $P(\Omega) = 1$ and the three sets are pairwise disjoint:
+$$P(H \cup M \cup L) = P(H) + P(M) + P(L) = P(\Omega) = 1$$
+
+Both properties hold by construction: each customer belongs to exactly one activity tier.
 
 ---
 
 ## Part 2 — Marginal Probabilities of Each Activity Level
 
-$$P(H) = \frac{100}{400} = \boxed{0.25}$$
+We assign probabilities from the empirical frequencies. The events $H$, $M$, $L$ are **disjoint**, so their probabilities add. We verify this using the **inclusion–exclusion principle**:
 
-$$P(M) = \frac{150}{400} = \boxed{0.375}$$
+$$P(H \cup M \cup L) = P(H) + P(M) + P(L) - \underbrace{P(H \cap M)}_{=0} - \underbrace{P(H \cap L)}_{=0} - \underbrace{P(M \cap L)}_{=0} + \underbrace{P(H \cap M \cap L)}_{=0}$$
 
-$$P(L) = \frac{150}{400} = \boxed{0.375}$$
+The three intersection terms vanish because the sets are disjoint. This reduces to:
 
-**Check:** $0.25 + 0.375 + 0.375 = 1.00$ ✓
+$$P(H \cup M \cup L) = P(H) + P(M) + P(L)$$
+
+Assigning:
+
+$$P(H) = 0.25, \quad P(M) = 0.375, \quad P(L) = 0.375$$
+
+**Check (exhaustiveness):**
+$$P(H) + P(M) + P(L) = 0.25 + 0.375 + 0.375 = 1 = P(\Omega) \checkmark$$
 
 ---
 
-## Part 3 — Renewal Rate Within Each Activity Level
+## Part 3 — Conditional Probabilities (Renewal Rate Within Each Group)
 
-**$P(R\mid H)$** — renewal rate among high-activity customers:
+The **definition of conditional probability** for any events $A, B$ with $P(B) > 0$:
 
-$$P(R\mid H) = \frac{80}{100} = \boxed{0.80}$$
+$$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$
 
-**$P(R\mid M)$** — renewal rate among medium-activity customers:
+This is not a formula derived from counting — it is the **axiomatic definition** that links the probability of the intersection $A \cap B$ to the probability of the conditioning event $B$.
 
-$$P(R\mid M) = \frac{90}{150} = \boxed{0.60}$$
+**$P(R \mid H)$:**
 
-**$P(R\mid L)$** — renewal rate among low-activity customers:
+We need $P(R \cap H)$ and $P(H)$. The intersection $R \cap H$ is the event "renewed **and** high activity":
 
-$$P(R\mid L) = \frac{30}{150} = \boxed{0.20}$$
+$$P(R \mid H) = \frac{P(R \cap H)}{P(H)} = \frac{0.20}{0.25} = \boxed{0.80}$$
 
-**Pattern:** Renewal rate drops sharply with activity level — from 80% (high) to 60% (medium) to just 20% (low). Activity level is a strong predictor of renewal.
+*(Here $P(R \cap H) = 80/400 = 0.20$ and $P(H) = 100/400 = 0.25$.)*
+
+**$P(R \mid M)$:**
+
+$$P(R \mid M) = \frac{P(R \cap M)}{P(M)} = \frac{0.225}{0.375} = \boxed{0.60}$$
+
+*(Here $P(R \cap M) = 90/400 = 0.225$.)*
+
+**$P(R \mid L)$:**
+
+$$P(R \mid L) = \frac{P(R \cap L)}{P(L)} = \frac{0.075}{0.375} = \boxed{0.20}$$
+
+*(Here $P(R \cap L) = 30/400 = 0.075$.)*
+
+**Pattern:** Renewal rate drops sharply — 80% (high) → 60% (medium) → 20% (low).
 
 ---
 
 ## Part 4 — Law of Total Probability
 
-Since $H$, $M$, $L$ partition the sample space, the overall renewal probability is the weighted average of the conditional renewal rates:
+Since $H$, $M$, $L$ partition $\Omega$, the event $R$ can be decomposed into **disjoint pieces**:
 
-$$P(R) = P(R\mid H)\cdot P(H) + P(R\mid M)\cdot P(M) + P(R\mid L)\cdot P(L)$$
+$$R = (R \cap H) \cup (R \cap M) \cup (R \cap L)$$
 
-$$P(R) = 0.80\times 0.25 + 0.60\times 0.375 + 0.20\times 0.375$$
+These three pieces are disjoint (because $H, M, L$ are disjoint), so by the **additivity axiom**:
+
+$$P(R) = P(R \cap H) + P(R \cap M) + P(R \cap L)$$
+
+Now apply the **definition of conditional probability** in the form $P(R \cap B) = P(R \mid B) \cdot P(B)$ to each term:
+
+$$\boxed{P(R) = P(R \mid H)\cdot P(H) + P(R \mid M)\cdot P(M) + P(R \mid L)\cdot P(L)}$$
+
+$$P(R) = 0.80 \times 0.25 + 0.60 \times 0.375 + 0.20 \times 0.375$$
 
 $$P(R) = 0.20 + 0.225 + 0.075 = \boxed{0.50}$$
 
-**Verification from the table:** $\frac{200}{400} = 0.50$ ✓
-
-The law of total probability is powerful when you know conditional rates within subgroups but not the overall rate directly. The overall rate is the weighted sum, where weights are the group sizes.
+**Note:** This formula is nothing more than applying additivity to disjoint events plus the definition of conditional probability — no counting argument required.
 
 ---
 
-## Part 5 — Bayes' Formula: Who Are the Renewers?
+## Part 5 — Bayes' Formula
 
-Given that a customer renewed, what is the probability they came from each activity group? These are computed using Bayes' formula:
+We want $P(H \mid R)$, $P(M \mid R)$, $P(L \mid R)$. Apply the **definition of conditional probability** with the roles reversed:
 
-$$P(H\mid R) = \frac{P(R\mid H)\cdot P(H)}{P(R)} = \frac{0.80\times 0.25}{0.50} = \frac{0.20}{0.50} = \boxed{0.40}$$
+$$P(H \mid R) = \frac{P(H \cap R)}{P(R)}$$
 
-$$P(M\mid R) = \frac{P(R\mid M)\cdot P(M)}{P(R)} = \frac{0.60\times 0.375}{0.50} = \frac{0.225}{0.50} = \boxed{0.45}$$
+The numerator is the same intersection as before — $P(H \cap R) = P(R \cap H)$ (intersection is commutative). Apply the definition of conditional probability again in the other direction:
 
-$$P(L\mid R) = \frac{P(R\mid L)\cdot P(L)}{P(R)} = \frac{0.20\times 0.375}{0.50} = \frac{0.075}{0.50} = \boxed{0.15}$$
+$$P(H \cap R) = P(R \mid H) \cdot P(H)$$
 
-**Check:** $0.40 + 0.45 + 0.15 = 1.00$ ✓
+Substituting, and using the Law of Total Probability for $P(R)$ in the denominator:
 
-**Composition of renewers:**
+$$P(H \mid R) = \frac{P(R \mid H)\cdot P(H)}{P(R \mid H)\cdot P(H) + P(R \mid M)\cdot P(M) + P(R \mid L)\cdot P(L)}$$
 
-| Activity group | Share of all customers | Share of renewers |
-|----------------|------------------------|-------------------|
-| High | 25% | 40% |
-| Medium | 37.5% | 45% |
-| Low | 37.5% | 15% |
+This is **Bayes' formula** — it follows directly from the definition of conditional probability applied twice, plus additivity.
 
-High-activity customers make up only 25% of the total customer base but **40%** of all renewers — they are overrepresented among renewers. Low-activity customers make up 37.5% of the base but only **15%** of renewers — severely underrepresented.
+**Computing each posterior:**
+
+$$P(H \mid R) = \frac{0.80 \times 0.25}{0.50} = \frac{0.20}{0.50} = \boxed{0.40}$$
+
+$$P(M \mid R) = \frac{0.60 \times 0.375}{0.50} = \frac{0.225}{0.50} = \boxed{0.45}$$
+
+$$P(L \mid R) = \frac{0.20 \times 0.375}{0.50} = \frac{0.075}{0.50} = \boxed{0.15}$$
+
+**Check** (the posteriors must sum to 1, since $H, M, L$ partition $\Omega$ and $P(\cdot \mid R)$ is itself a valid probability measure):
+
+$$P(H \mid R) + P(M \mid R) + P(L \mid R) = 0.40 + 0.45 + 0.15 = 1 \checkmark$$
 
 ---
 
-## Part 6 — Interpreting $P(R\mid H)$ vs $P(H\mid R)$
+## Part 6 — Interpreting $P(R \mid H)$ vs $P(H \mid R)$
 
-| Probability | Value | Question answered |
-|-------------|-------|------------------|
-| $P(R\mid H)$ | 0.80 | Given a customer is high-activity: how likely to renew? |
-| $P(H\mid R)$ | 0.40 | Given a customer renewed: how likely they were high-activity? |
+Both quantities are defined by the **same formula** — conditional probability — but they condition on different events:
 
-**$P(R\mid H) = 0.80$** is a **prediction**: Looking at a specific high-activity customer, what is their renewal probability? This is forward-looking — used before the renewal decision is made. It tells the sales team how to target customers.
+$$P(R \mid H) = \frac{P(R \cap H)}{P(H)} = 0.80 \qquad P(H \mid R) = \frac{P(H \cap R)}{P(R)} = 0.40$$
 
-**$P(H\mid R) = 0.40$** is a **retrospective description**: After observing that a customer renewed, what was their likely profile? This is backward-looking — used after the fact. It tells the analytics team what their renewed customers look like.
+The numerators are identical ($P(R \cap H) = P(H \cap R) = 0.20$), but the denominators differ — $P(H) = 0.25$ versus $P(R) = 0.50$.
 
-**Why are they different?**
+This is why **conditioning is not symmetric**: $P(R \mid H) \ne P(H \mid R)$ in general. The denominator shifts the reference universe from "all customers" to "the subset $H$" or "the subset $R$", respectively.
 
-$P(R\mid H) = 0.80$ is large partly because high-activity customers have a strong tendency to renew. But $P(H\mid R) = 0.40$ also depends on how many high-activity customers there are in total (only 25% of the base). The medium group has a lower renewal rate (60%) but is larger (37.5% of customers), so it contributes even more renewers in total ($45\%$ of renewers).
+**$P(R \mid H) = 0.80$** — forward/predictive: the measure is restricted to $H$; within that reduced space, how large is $R$?
 
-This is a concrete example of **Bayes' theorem in practice**: both the conditional rate and the base rate jointly determine the posterior probability.
+**$P(H \mid R) = 0.40$** — retrospective/diagnostic: the measure is restricted to $R$; within that reduced space, how large is $H$?
+
+The asymmetry captures a fundamental fact: knowing the renewal rate of high-activity customers tells you nothing directly about what fraction of renewers are high-activity — you need the base rates $P(H), P(M), P(L)$ as well. That is precisely what Bayes' formula encodes.
 
 ---
 
 ## Summary
 
-| Quantity | Value |
-|----------|-------|
-| $P(H), P(M), P(L)$ | 0.25, 0.375, 0.375 |
-| $P(R\mid H)$ | 0.80 |
-| $P(R\mid M)$ | 0.60 |
-| $P(R\mid L)$ | 0.20 |
-| $P(R)$ (total probability) | **0.50** |
-| $P(H\mid R)$ | 0.40 |
-| $P(M\mid R)$ | 0.45 |
-| $P(L\mid R)$ | 0.15 |
+| Quantity | Set-algebra origin | Value |
+|----------|-------------------|-------|
+| $P(H), P(M), P(L)$ | Additivity + exhaustiveness | 0.25, 0.375, 0.375 |
+| $P(R \cap H),\ P(R \cap M),\ P(R \cap L)$ | Direct assignment | 0.20, 0.225, 0.075 |
+| $P(R \mid H),\ P(R \mid M),\ P(R \mid L)$ | Definition: $P(A\mid B) = P(A\cap B)/P(B)$ | 0.80, 0.60, 0.20 |
+| $P(R)$ | Additivity of disjoint events | **0.50** |
+| $P(H\mid R),\ P(M\mid R),\ P(L\mid R)$ | Bayes = definition applied twice | 0.40, 0.45, 0.15 |
